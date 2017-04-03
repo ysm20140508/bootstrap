@@ -33,8 +33,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">基金曲线图</a></li>
-                <li><a href="#about">基金收益</a></li>
+                <li class="active"><a href="#" onclick="fundNetWorth(this)">基金曲线图</a></li>
+                <li><a onclick="fundMakeShare(this)">基金收益</a></li>
                 <li><a href="#contact">基金订单</a></li>
             </ul>
         </div>
@@ -44,7 +44,7 @@
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-xs-12 col-sm-18">
-            <div class="input-group">
+            <div class="input-group"  id="input-group">
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">请选择基金 <span class="caret"></span></button>
@@ -75,17 +75,6 @@
     var objectJson = {code: 519120};
 
     /**
-     * 更改基金的曲线图
-     */
-    function fundNetWorth() {
-        objectJson = {code: $("#fundCode").val()}
-        $.post("http://localhost:8082/rest/fundNetworth", JSON.stringify(objectJson), function (data) {
-            lineOption(data);
-        }, "json");
-
-    }
-
-    /**
      * 初始化的基金曲线图
      */
     (function () {
@@ -102,6 +91,16 @@
         }, "json");
     })();
 
+    /**
+     * 更改基金的曲线图
+     */
+    function fundNetWorth(ss) {
+        $.post("http://localhost:8082/rest/fundNetworth", JSON.stringify(objectJson), function (data) {
+            lineOption(data);
+        }, "json");
+        $("#input-group").show();
+        clickText(ss);
+    }
 
     /**
      * 选择基金
@@ -115,6 +114,132 @@
         }, "json");
     }
 
+    /**
+     * 基金赚取的份额
+     */
+    function fundMakeShare(ss) {
+        $.post("http://localhost:8082/rest/makeshare", JSON.stringify(objectJson), function (data) {
+            gradient(data);
+        }, "json");
+        $("#input-group").hide();
+        clickText(ss)
+    }
+
+    /**
+     * 点击菜单,变化菜单样式
+     */
+    function clickText(ss) {
+        $("li").removeClass("active");
+        $(ss).parent().addClass("active");
+    }
+
+    /**
+     *
+     */
+    function gradient(data) {
+        var dataAxis=[];
+        var dataYxis=[];
+        var dataShadow=[];
+        var makeShares = data.makeShareList;
+        var maxMakeShare = data.max;
+        for(var i=0;i<makeShares.length;i++) {
+            var value=makeShares[i].code+":"+makeShares[i].total;
+            dataAxis.push(value);
+            dataYxis.push(makeShares[i].total);
+            dataShadow.push(maxMakeShare);
+        }
+        var option = {
+            title: {
+                text: '赚取基金份额',
+                subtext: 'Feature Sample: Gradient Color, Shadow, Click Zoom'
+            },
+            xAxis: {
+                data: dataAxis,
+                axisLabel: {
+                    inside: true,
+                    textStyle: {
+                        color: '#666633'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                z: 10
+            },
+            yAxis: {
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            dataZoom: [
+                {
+                    type: 'inside'
+                }
+            ],
+            series: [
+                {
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {color: 'rgba(0,0,0,0.05)'}
+                    },
+                    barGap:'-100%',
+                    barCategoryGap:'40%',
+                    data: dataShadow,
+                    animation: false
+                },
+                {
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#ff6600'},
+                                    {offset: 0.5, color: '#ff6633'},
+                                    {offset: 1, color: '#ff6666'}
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#ff6600'},
+                                    {offset: 0.7, color: '#ff6633'},
+                                    {offset: 1, color: '#ff6666'}
+                                ]
+                            )
+                        }
+                    },
+                    data: dataYxis
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart = echarts.init(document.getElementById('echart'));
+        myChart.setOption(option);
+        myChart.on('mouseOver', function (params) {
+            for(var i=0;i<makeShares.length;i++) {
+                var value=makeShares[i].code+":"+makeShares[i].total;
+                if(params.name==value){
+                    option.title.text=makeShares[i].name;
+                    break;
+                }
+            }
+            myChart.setOption(option)
+        });
+    }
     /**
      * 组装后端基金净值数据echart对应格式
      * @param data
@@ -188,6 +313,7 @@
             }]
         };
         // 使用刚指定的配置项和数据显示图表。
+        myChart = echarts.init(document.getElementById('echart'));
         myChart.setOption(option);
     }
 </script>
