@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon/favicon.ico">
+    <link rel="icon" href="favicon/fund.ico">
     <title>Off Canvas Template for Bootstrap</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -75,7 +75,7 @@
         $.post("http://localhost:8082/rest/fundNetworth", JSON.stringify(objectJson), function (data) {
             lineOption(data);
         }, "json");
-        //获取要关注基金的数据
+        //获取关注基金数据
         $.post("http://localhost:8082/rest/fundList", JSON.stringify(objectJson), function (data) {
             for (var i = 0; i < data.attentionFundList.length; i++) {
                 var ss = ("<li><a onclick=\"choiceFund('" + data.attentionFundList[i].fundCode + "','" + data.attentionFundList[i].fundName + "')\">" +
