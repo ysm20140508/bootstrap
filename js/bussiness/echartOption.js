@@ -14,7 +14,7 @@ function gradient(data) {
     var makeShares = data.makeShareList;
     var maxMakeShare = data.max;
     for(var i=0;i<makeShares.length;i++) {
-        var value=makeShares[i].code+":"+makeShares[i].total;
+        var value=makeShares[i].code;
         dataAxis.push(value);
         dataYxis.push(makeShares[i].total);
         dataShadow.push(maxMakeShare);
@@ -22,7 +22,7 @@ function gradient(data) {
     var option = {
         title: {
             text: '赚取基金份额',
-            subtext: 'Feature Sample: Gradient Color, Shadow, Click Zoom'
+            subtext: ''
         },
         xAxis: {
             data: dataAxis,
@@ -102,9 +102,10 @@ function gradient(data) {
     myChart.setOption(option);
     myChart.on('mouseOver', function (params) {
         for(var i=0;i<makeShares.length;i++) {
-            var value=makeShares[i].code+":"+makeShares[i].total;
+            var value=makeShares[i].code;
             if(params.name==value){
-                option.title.text=makeShares[i].name;
+                option.title.text=makeShares[i].name+"("+makeShares[i].code+")";
+                option.title.subtext=makeShares[i].total;
                 break;
             }
         }
