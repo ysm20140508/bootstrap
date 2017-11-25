@@ -1,0 +1,63 @@
+<button class="button button-pill button-rounded button-highlight" data-toggle="modal" data-target="#crontabCreate">
+    创建基金定投
+</button>
+<button class="button button-pill button-rounded button-caution" data-toggle="modal" data-target="#crontabCreate">
+    修改基金定投
+</button>
+<button class="button button-pill button-primary" data-toggle="modal" data-target="#crontabCreate">
+    基金卖出
+</button>
+
+
+<div class="modal fade" id="crontabCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    创建基金定投
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon" id="create-crontab-name">定投名称</span>
+                    <input type="text" class="form-control" aria-describedby="create-crontab-name">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="create-crontab-fundCode">定投基金</span>
+                    <input type="text" class="form-control" aria-describedby="create-crontab-fundCode">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="create-crontab-startTime">开始时间</span>
+                    <input type="text" class="form-control" aria-describedby="create-crontab-startTime">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="create-crontab-endTime">结束时间</span>
+                    <input type="text" class="form-control" aria-describedby="create-crontab-endTime">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="create-crontab-amount">定投金额</span>
+                    <input type="text" class="form-control" aria-describedby="create-crontab-amount">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="create-crontab-buyRate">买入费率</span>
+                    <input type="text" class="form-control" aria-describedby="create-crontab-buyRate">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="create-crontab-sellRate">卖出费率</span>
+                    <input type="text" class="form-control" aria-describedby="create-crontab-sellRate">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary">
+                    提交更改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
