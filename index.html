@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="myApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <link rel="icon" href="favicon/fund.ico">
     <title>Off Canvas Template for Bootstrap</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
     <link href="offcanvas.css" rel="stylesheet">
     <link href="css/bootcss.css" rel="stylesheet">
-    <script src="js/ie-emulation-modes-warning.js"></script>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <script src="js/jquery.min.js"></script>
+    <script src="js/base/angular.min.js"></script>
+    <script src="js/base/ie-emulation-modes-warning.js" type="text/javascript" charset='utf-8'></script>
+    <script src="js/base/jquery.min.js" type="text/javascript" charset='utf-8'></script>
 
 </head>
 <body>
@@ -44,12 +44,131 @@
 <!--图表-->
 <div class="container" id="echartDiv"></div>
 <!--管理界面-->
-<div class="container" id="manageDiv"></div>
+<div class="container" id="manageDiv" ng-controller="customersCtrl">
+    <button class="button button-pill button-rounded button-highlight" data-toggle="modal" data-target="#crontabCreate">
+        创建基金定投
+    </button>
+    <button class="button button-pill button-rounded button-caution" data-toggle="modal" data-target="#crontabList">
+        定投列表
+    </button>
+    <button class="button button-pill button-primary" data-toggle="modal" data-target="#crontabCreate">
+        基金卖出
+    </button>
 
-<script src="js/echarts.js"/>
-<script>window.jQuery || document.write('<script src="js/jquery.min.v2.js"><\/script>')</script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/ie10-viewport-bug-workaround.js"></script>
+    <div class="modal fade" id="crontabList" tabindex="-2" role="dialog" aria-labelledby="crontabListModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width:100%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="crontabListModalLabel">
+                        定投列表
+                    </h4>
+                </div>
+                <div class="modal-body" >
+                    <table class="table table-condensed table-bordered">
+                        <tr class="active">
+                            <th>定投ID</th>
+                            <th>名称</th>
+                            <th>基金CODE</th>
+                            <th>基金名称</th>
+                            <th>金额</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>买费</th>
+                            <th>卖费</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr ng-repeat="crontab in crontabs">
+                            <td>{{ crontab.id }}</td>
+                            <td>{{ crontab.crontabName }}</td>
+                            <td>{{ crontab.fundCode }}</td>
+                            <td>{{ crontab.fundName }}</td>
+                            <td>{{ crontab.amount }}</td>
+                            <td>{{ crontab.startTime }}</td>
+                            <td>{{ crontab.endTime }}</td>
+                            <td>{{ crontab.buyRate }}</td>
+                            <td>{{ crontab.sellRate }}</td>
+                            <td>{{ crontab.createTime }}</td>
+                            <td>{{ crontab.state }}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm">删除</button>
+                                <button type="submit" class="btn btn-warning btn-sm">默认</button>
+                                <button type="reset" class="btn btn-primary btn-sm">更改</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="crontabCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        创建基金定投
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="create-crontab-name">定投名称</span>
+                        <input type="text" id="crontabName" class="form-control" aria-describedby="create-crontab-name">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="create-crontab-fundCode">定投基金</span>
+                        <input type="text" id="fundCode" class="form-control"
+                               aria-describedby="create-crontab-fundCode">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="create-crontab-startTime">开始时间</span>
+                        <input type="text" id="startTime" class="form-control"
+                               aria-describedby="create-crontab-startTime">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="create-crontab-endTime">结束时间</span>
+                        <input type="text" id="endTime" class="form-control" aria-describedby="create-crontab-endTime">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="create-crontab-amount">定投金额</span>
+                        <input type="text" id="amount" class="form-control" aria-describedby="create-crontab-amount">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="create-crontab-buyRate">买入费率</span>
+                        <input type="text" id="buyRate" class="form-control" aria-describedby="create-crontab-buyRate">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="create-crontab-sellRate">卖出费率</span>
+                        <input type="text" id="sellRate" class="form-control"
+                               aria-describedby="create-crontab-sellRate">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="crontabCreate()" data-dismiss="modal">
+                        提交更改
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/base/echarts.js"/>
+<script>window.jQuery || document.write('<script src="js/base/jquery.min.v2.js"><\/script>')</script>
+<script src="js/base/bootstrap.min.js"></script>
+<script src="js/base/ie10-viewport-bug-workaround.js"></script>
 <script src="offcanvas.js"></script>
 <script type="text/javascript">
     var objectJson = {code: 519120};
@@ -69,13 +188,40 @@
                 $("#fundList").append(ss);
             }
         }, "json");
-    })()
+    })();
 
+
+    /**
+     * 加载子页面
+     */
     $("#echartDiv").load("html/echart.html");
-    $("#manageDiv").load("html/manager.html");
+    //$("#manageDiv").load("html/manager.html");
+
+    /**
+     * 定投列表
+     * @type {angular.Module}
+     */
+    var app = angular.module('myApp', []);
+    app.controller('customersCtrl', function ($scope, $http) {
+        var params = {fundCode: "123", "fundName": "定投列表"};
+        $http({
+            url: 'http://localhost:8082/rest/crontab/list',
+            method: 'POST',
+            data: params,
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+        }).then(function (data) {
+            $scope.crontabs = data.data.crontabList;
+        }).catch(function (err) {
+            alert(JSON.stringify(err));
+        });
+    });
 </script>
 <script src="js/bussiness/echartOption.js" type="text/javascript" charset='utf-8'></script>
 <script src="js/bussiness/menu.js" type="text/javascript" charset='utf-8'></script>
+<script src="js/strategy/manger.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     echartShow();
 </script>
