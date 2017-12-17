@@ -51,8 +51,8 @@
     <button class="button button-pill button-rounded button-caution" data-toggle="modal" data-target="#crontabList">
         定投列表
     </button>
-    <button class="button button-pill button-primary" data-toggle="modal" data-target="#crontabCreate">
-        基金卖出
+    <button class="button button-pill button-primary" data-toggle="modal" data-target="#frankList">
+        基金排行
     </button>
 
     <div class="modal fade" id="crontabList" tabindex="-2" role="dialog" aria-labelledby="crontabListModalLabel"
@@ -67,7 +67,7 @@
                         定投列表
                     </h4>
                 </div>
-                <div class="modal-body" >
+                <div class="modal-body">
                     <table class="table table-condensed table-bordered">
                         <tr class="active">
                             <th>定投ID</th>
@@ -81,7 +81,6 @@
                             <th>卖费</th>
                             <th>创建时间</th>
                             <th>状态</th>
-                            <th>操作</th>
                         </tr>
                         <tr ng-repeat="crontab in crontabs">
                             <td>{{ crontab.id }}</td>
@@ -93,20 +92,15 @@
                             <td>{{ crontab.endTime }}</td>
                             <td>{{ crontab.buyRate }}</td>
                             <td>{{ crontab.sellRate }}</td>
-                            <td>{{ crontab.createTime }}</td>
-                            <td>{{ crontab.state }}</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm">删除</button>
-                                <button type="submit" class="btn btn-warning btn-sm">默认</button>
-                                <button type="reset" class="btn btn-primary btn-sm">更改</button>
-                            </td>
+                            <td>{{ crontab.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                            <td ng-if="crontab.state==0" class="danger"> 禁用中</td>
+                            <td ng-if="crontab.state==1" class="active"> 启用中</td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="crontabCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -163,6 +157,45 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="frankList" tabindex="-2" role="dialog" aria-labelledby="frankListModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width:100%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="frankListModalLabel">
+                        基金排行
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-condensed table-bordered">
+                        <tr class="active">
+
+                            <th>基金代码</th>
+                            <th>基金净值</th>
+                            <th>基金比例</th>
+                            <th>时间</th>
+                            <th>基金url</th>
+                            <th>序号</th>
+                        <tr ng-repeat="frank in ranks">
+
+                            <td>{{ frank.fundCode }}</td>
+                            <td>{{ frank.netWorth }}</td>
+                            <td>{{ frank.ratio }}</td>
+                            <td>{{ frank.time }}</td>
+                            <td><a href="http://fund.eastmoney.com/{{frank.fundCode}}.html?spm=001.2.swh"
+                                   target="_blank">{{
+                                frank.fundCode }}</a></td>
+                            <td>{{ frank.id }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="js/base/echarts.js"/>
@@ -214,6 +247,20 @@
             }
         }).then(function (data) {
             $scope.crontabs = data.data.crontabList;
+        }).catch(function (err) {
+            alert(JSON.stringify(err));
+        });
+
+        $http({
+            url: 'http://localhost:8082/fund/analyse/frank',
+            method: 'POST',
+            data: params,
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+        }).then(function (data) {
+            $scope.ranks = data.data.ranks;
         }).catch(function (err) {
             alert(JSON.stringify(err));
         });
