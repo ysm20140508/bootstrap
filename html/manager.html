@@ -8,6 +8,10 @@
     基金排行
 </button>
 
+<button class="button button-pill button-primary" data-toggle="modal" data-target="#crontabAnalyseList">
+    定投收益分析
+</button>
+
 <div class="modal fade" id="crontabCreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -124,15 +128,14 @@
             <div class="modal-body">
                 <table class="table table-condensed table-bordered">
                     <tr class="active">
-
                         <th>基金代码</th>
                         <th>基金净值</th>
                         <th>基金比例</th>
                         <th>时间</th>
                         <th>基金url</th>
                         <th>序号</th>
+                    </tr>
                     <tr ng-repeat="frank in ranks">
-
                         <td>{{ frank.fundCode }}</td>
                         <td>{{ frank.netWorth }}</td>
                         <td>{{ frank.ratio }}</td>
@@ -141,6 +144,50 @@
                                target="_blank">{{
                             frank.fundCode }}</a></td>
                         <td>{{ frank.id }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="crontabAnalyseList" tabindex="-2" role="dialog" aria-labelledby="crontabAnalyseLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width:100%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="crontabAnalyseLabel">
+                    基金排行
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-condensed table-bordered">
+                    <tr class="active">
+                        <th>定投id</th>
+                        <th>基金代码</th>
+                        <th>基金名称</th>
+                        <th>平均净值</th>
+                        <th>卖出净值</th>
+                        <th>定投金额</th>
+                        <th>定投份额</th>
+                        <th>定投期数</th>
+                        <th>收益比例</th>
+                        <th>当前净值</th>
+                    </tr>
+                    <tr ng-repeat="crontabAnalyse in crontabAnalyses">
+                        <td>{{ crontabAnalyse.crontabId }}</td>
+                        <td>{{ crontabAnalyse.fundCode }}</td>
+                        <td>{{ crontabAnalyse.fundName }}</td>
+                        <td>{{ crontabAnalyse.averNetWorth }}</td>
+                        <td>{{ crontabAnalyse.sellNetWorth }}</td>
+                        <td>{{ crontabAnalyse.crontabAmount }}</td>
+                        <td>{{ crontabAnalyse.crontabShare }}</td>
+                        <td>{{ crontabAnalyse.crontabNum }}</td>
+                        <td ng-if="crontabAnalyse.rate <0" class="danger">{{ crontabAnalyse.rate }}</td>
+                        <td ng-if="crontabAnalyse.rate >=0">{{ crontabAnalyse.rate }}</td>
+                        <td>{{ crontabAnalyse.netWorth }}</td>
                     </tr>
                 </table>
             </div>
