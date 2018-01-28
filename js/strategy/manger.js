@@ -2,7 +2,7 @@
  * 创建定投
  */
 function crontabCreate() {
-    var crontabCreateJson = new Object();
+    var crontabCreateJson = {};
     crontabCreateJson.crontabName = $("#crontabName").val();
     crontabCreateJson.fundCode = $("#fundCode").val();
     crontabCreateJson.startTime = $("#startTime").val();
@@ -12,7 +12,7 @@ function crontabCreate() {
     crontabCreateJson.sellRate = $("#sellRate").val();
     alert(JSON.stringify(crontabCreateJson));
     //post json
-    $.post("http://localhost:8082/rest/crontab/create", JSON.stringify(crontabCreateJson), function (data) {
+    $.post(path + "rest/crontab/create", JSON.stringify(crontabCreateJson), function (data) {
     }, "json");
 
 }

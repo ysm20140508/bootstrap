@@ -17,7 +17,9 @@
     <script src="js/base/angular-route.min.js"></script>
     <script src="js/base/ie-emulation-modes-warning.js" type="text/javascript" charset='utf-8'></script>
     <script src="js/base/jquery.min.js" type="text/javascript" charset='utf-8'></script>
-
+    <script>
+        const path = "http://192.168.1.100:8082/";
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-fixed-top navbar-inverse">
@@ -37,6 +39,7 @@
                 <li class="active"><a href="#" onclick="fundNetWorth(this)">基金曲线图</a></li>
                 <li><a href="#" onclick="fundMakeShare(this)">基金收益</a></li>
                 <li><a href="#/manager" onclick="manage(this)">基金管理</a></li>
+                <li><a href="#/subject" onclick="subject(this)">主题基金</a></li>
             </ul>
         </div>
     </div>
@@ -46,6 +49,10 @@
 <div class="container" id="echartDiv"></div>
 <!--管理界面-->
 <div class="container" id="manageDiv" ng-controller="manageController">
+    <ng-view></ng-view>
+</div>
+<!--主题基金-->
+<div class="container" id="subjectDiv" ng-controller="subjectController">
     <ng-view></ng-view>
 </div>
 

@@ -6,7 +6,7 @@ var app = angular.module('myApp', ["ngRoute"]);
 app.controller('manageController', function ($scope, $http) {
     var params = {fundCode: "123", "fundName": "定投列表"};
     $http({
-        url: 'http://localhost:8082/rest/crontab/list',
+        url: path + 'rest/crontab/list',
         method: 'POST',
         data: params,
         headers: {
@@ -20,7 +20,7 @@ app.controller('manageController', function ($scope, $http) {
     });
 
     $http({
-        url: 'http://localhost:8082/fund/analyse/frank',
+        url: path + 'fund/analyse/frank',
         method: 'POST',
         data: params,
         headers: {
@@ -34,7 +34,7 @@ app.controller('manageController', function ($scope, $http) {
     });
 
     $http({
-        url: 'http://localhost:8082/crontab/analyse/list',
+        url: path + 'crontab/analyse/list',
         method: 'POST',
         data: params,
         headers: {
@@ -47,10 +47,16 @@ app.controller('manageController', function ($scope, $http) {
         alert(JSON.stringify(err));
     });
 
-}).config(function ($routeProvider, $locationProvider) {
+}).controller('subjectController', function ($scope, $http) {
+
+}).config(function ($routeProvider) {
     $routeProvider
         .when('/manager', {
             templateUrl: 'html/manager.html',
             controller: 'manageController'
+        })
+        .when('/subject', {
+            templateUrl: 'html/subject.html',
+            controller: 'subjectController'
         })
 });
